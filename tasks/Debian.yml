@@ -1,12 +1,14 @@
 ---
 # tasks file for hoplacloud.wordpress
 
-- name: generate random password for wordpress and database
+- name: Init vars
   set_fact:
     wp_password: "{{ lookup('password', '/dev/null length=8 chars=ascii_letters,digits,hexdigits,punctuation') }}"
     db_name: "{{ lookup('password', '/dev/null length=16 chars=ascii_letters,digits,hexdigits') }}"
     db_password: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters,digits,hexdigits') }}"
-
+    vhost_user: "{{ vhost_url | regex_replace('\\.') | truncate(13, True, '') }}"
+    vhost_domain: "{{ vhost_url | regex_replace('([^\\.]*)\\.(.+)$', '\\2') }}"
+    vhost_sdomain: "{{ vhost_url | regex_replace('([^\\.]*)\\.(.+)$', '\\1') }}"
 
 - name: Create mysql database
   mysql_db:

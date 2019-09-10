@@ -1,2 +1,3 @@
 ---
 # vars file for hoplacloud.wordpress
+vhost_url: exemple.domain.com
