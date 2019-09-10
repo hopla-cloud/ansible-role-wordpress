@@ -1,0 +1,58 @@
+---
+# tasks file for hoplacloud.wordpress
+
+- name: generate random password for wordpress and database
+  set_fact:
+    wp_password: "{{ lookup('password', '/dev/null length=8 chars=ascii_letters,digits,hexdigits,punctuation') }}"
+    db_name: "{{ lookup('password', '/dev/null length=16 chars=ascii_letters,digits,hexdigits') }}"
+    db_password: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters,digits,hexdigits') }}"
+
+
+- name: Create mysql database
+  mysql_db:
+    name: {{ db_name }}
+    state: present
+
+- name: Create mysql user
+  mysql_user:
+    state: present
+    name: {{ db_name }}
+    password: {{ db_password }}
+    login_host: localhost
+    priv: '{{ db_name }}.*:ALL'
+
+- name: Download WordPress
+  get_url:
+    url: "https://wordpress.org/latest.tar.gz"
+    dest: "/tmp/wordpress.tar.gz"
+    validate_certs: "no"
+
+- name: Extract WordPress
+  unarchive:
+    src: "/tmp/wordpress.tar.gz"
+    des: "/var/www/"
+    copy: "no"
+
+- name: Update default Apache site
+  lineinfile:
+    dest: "/etc/apache2/sites-enabled/000-default.conf"
+    regexp: '"(.)+DocumentRoot /var/www/html"'
+    line: '"DocumentRoot /var/www/wordpress"'
+  notify:
+    - restart apache
+
+- name: Copy sample config file
+  copy:
+    remote_src: yes
+    src: "/var/www/wordpress/wp-config-sample.php"
+    dst: "/var/www/wordpress/wp-config.php"
+
+- name: Update WordPress config file
+  lineinfile:
+    dest: "/var/www/wordpress/wp-config.php"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - {'regexp': "define\\('DB_NAME', '(.)+'\\);", 'line': "define('DB_NAME', '{{ db_name }}}');"}
+    - {'regexp': "define\\('DB_USER', '(.)+'\\);", 'line': "define('DB_USER', '{{ db_name }}');"}
+    - {'regexp': "define\\('DB_PASSWORD', '(.)+'\\);", 'line': "define('DB_PASSWORD', '{{ db_password }}');"}
