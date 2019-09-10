@@ -10,14 +10,14 @@
 
 - name: Create mysql database
   mysql_db:
-    name: {{ db_name }}
+    name: "{{ db_name }}"
     state: present
 
 - name: Create mysql user
   mysql_user:
     state: present
-    name: {{ db_name }}
-    password: {{ db_password }}
+    name: "{{ db_name }}"
+    password: "{{ db_password }}"
     login_host: localhost
     priv: '{{ db_name }}.*:ALL'
 
