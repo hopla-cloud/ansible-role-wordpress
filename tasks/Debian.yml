@@ -38,11 +38,28 @@
     dest: "/tmp/wordpress.tar.gz"
     validate_certs: "no"
 
-- name: Extract WordPress
+- name: Extract WordPress files
   unarchive:
     src: "/tmp/wordpress.tar.gz"
-    dest: "{{ vhost_path }}/"
+    dest: "tmp/"
     remote_src: yes
+
+- name: Copy WordPress files
+  copy:
+    src: "/tmp/wordpress"
+    dest: "{{ vhost_path }}"
+    state: directory
+    remote_src: yes
+
+- name: delete temp files [1/2]
+  file:
+    state: absent
+    path: "/tmp/wordpress"
+
+- name: delete temp files [2/2]
+  file:
+    state: absent
+    path: "/tmp/wordpress.tar.gz"
 
 - name: Copy vhost config
   copy:
