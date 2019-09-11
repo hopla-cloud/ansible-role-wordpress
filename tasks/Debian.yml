@@ -4,24 +4,29 @@
 - name: Init vars
   set_fact:
     wp_password: "{{ lookup('password', '/dev/null length=8 chars=ascii_letters,digits,hexdigits,punctuation') }}"
-    db_name: "{{ lookup('password', '/dev/null length=16 chars=ascii_letters,digits,hexdigits') }}"
     db_password: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters,digits,hexdigits') }}"
     vhost_user: "{{ vhost_url | regex_replace('\\.') | truncate(13, True, '') }}"
     vhost_domain: "{{ vhost_url | regex_replace('([^\\.]*)\\.(.+)$', '\\2') }}"
     vhost_sdomain: "{{ vhost_url | regex_replace('([^\\.]*)\\.(.+)$', '\\1') }}"
+    vhost_path: "{{ /var/www/cust/, vhost_domain,_vhost_sdomain }}"
 
 - name: Create mysql database
   mysql_db:
-    name: "{{ db_name }}"
+    name: "{{ vhost_user }}"
     state: present
 
 - name: Create mysql user
   mysql_user:
     state: present
-    name: "{{ db_name }}"
+    name: "{{ vhost_user }}"
     password: "{{ db_password }}"
     login_host: localhost
-    priv: '{{ db_name }}.*:ALL'
+    priv: '{{ vhost_user }}.*:ALL'
+
+- name: Creating websites directory
+  file:
+    path: "{{ vhost_path }}"
+    state: directory
 
 - name: Download WordPress
   get_url:
@@ -32,26 +37,47 @@
 - name: Extract WordPress
   unarchive:
     src: "/tmp/wordpress.tar.gz"
-    des: "/var/www/"
+    des: "{{ vhost_path }}/"
     copy: "no"
 
-- name: Update default Apache site
+- name: Copy vhost config
+  copy:
+    src: "files/vhost.conf"
+    dst: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
+
+- name: Update Apache vhost [1/4]
   lineinfile:
-    dest: "/etc/apache2/sites-enabled/000-default.conf"
-    regexp: '"(.)+DocumentRoot /var/www/html"'
-    line: '"DocumentRoot /var/www/wordpress"'
-  notify:
-    - restart apache
+    dest: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
+    regexp: '"vhost_path"'
+    line: '"{{ vhost_path }}"'
+
+- name: Update Apache vhost [2/4]
+  lineinfile:
+    dest: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
+    regexp: '"vhost_url"'
+    line: '"{{ vhost_url }}"'
+
+- name: Update Apache vhost [3/4]
+  lineinfile:
+    dest: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
+    regexp: '"php_version"'
+    line: '"{{ php_version }}"'
+
+- name: Update Apache vhost [4/4]
+  lineinfile:
+    dest: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
+    regexp: '"user_email"'
+    line: '"{{ user_email }}"'
 
 - name: Copy sample config file
   copy:
     remote_src: yes
-    src: "/var/www/wordpress/wp-config-sample.php"
-    dst: "/var/www/wordpress/wp-config.php"
+    src: "{{ vhost_path }}/wp-config-sample.php"
+    dst: "{{ vhost_path }}/wp-config.php"
 
 - name: Update WordPress config file
   lineinfile:
-    dest: "/var/www/wordpress/wp-config.php"
+    dest: "{{ vhost_path }}/wp-config.php"
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
   with_items:
