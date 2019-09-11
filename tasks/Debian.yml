@@ -46,32 +46,67 @@
 - name: Update Apache vhost [1/5]
   replace:
     path: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
-    regexp: '"vhost_path"'
-    replace: '"{{ vhost_path }}"'
+    regexp: 'vhost_path'
+    replace: '{{ vhost_path }}'
 
 - name: Update Apache vhost [2/5]
   replace:
     path: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
-    regexp: '"vhost_url"'
-    replace: '"{{ vhost_url }}"'
+    regexp: 'vhost_url'
+    replace: '{{ vhost_url }}'
 
 - name: Update Apache vhost [3/5]
   replace:
     path: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
-    regexp: '"php_version"'
-    replace: '"{{ php_version }}"'
+    regexp: 'php_version'
+    replace: '{{ php_version }}'
 
 - name: Update Apache vhost [4/5]
   replace:
     path: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
-    regexp: '"user_email"'
-    replace: '"{{ user_email }}"'
+    regexp: 'user_email'
+    replace: '{{ user_email }}'
 
 - name: Update Apache vhost [5/5]
   replace:
     path: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
-    regexp: '"vhost_conf_file"'
-    replace: '"{{ vhost_conf_file }}"'
+    regexp: 'vhost_conf_file'
+    replace: '{{ vhost_conf_file }}'
+
+- name: Enable wordpress vhost
+  command: "a2ensite /etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
+
+- name: Copy FPM config
+  copy:
+    src: "files/fpm.conf"
+    dest: "/etc/php/{{ php_version }}/fpm/pool.d/{{ vhost_conf_file }}.conf"
+
+- name: Update FPM vhost [1/4]
+  replace:
+    path: "/etc/php/{{ php_version }}/fpm/pool.d/{{ vhost_conf_file }}.conf"
+    regexp: 'vhost_user'
+    replace: '{{ vhost_user }}'
+
+- name: Update FPM vhost [2/4]
+  replace:
+    path: "/etc/php/{{ php_version }}/fpm/pool.d/{{ vhost_conf_file }}.conf"
+    regexp: 'vhost_url'
+    replace: '{{ vhost_url }}'
+
+- name: Update FPM vhost [3/4]
+  replace:
+    path: "/etc/php/{{ php_version }}/fpm/pool.d/{{ vhost_conf_file }}.conf"
+    regexp: 'php_version'
+    replace: '{{ php_version }}'
+
+- name: Update FPM vhost [4/4]
+  replace:
+    path: "/etc/php/{{ php_version }}/fpm/pool.d/{{ vhost_conf_file }}.conf"
+    regexp: 'vhost_conf_file'
+    replace: '{{ vhost_conf_file }}'
+
+- name: restart apache
+  service: name=apache2 state=restarted
 
 - name: Donwload wordpress core
   command: "wp core download --path={{ vhost_path }} --version=latest --locale=fr_FR --force --allow-root"
