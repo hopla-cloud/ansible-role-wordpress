@@ -83,7 +83,7 @@
   copy:
     remote_src: yes
     src: "{{ vhost_path }}/wp-config-sample.php"
-    dst: "{{ vhost_path }}/wp-config.php"
+    dest: "{{ vhost_path }}/wp-config.php"
 
 - name: Update WordPress config file
   lineinfile:
