@@ -135,4 +135,4 @@
     - {'regexp': "define\\('DB_PASSWORD', '(.)+'\\);", 'line': "define('DB_PASSWORD', '{{ db_password }}');"}
 
 - name: Install wordpress core
-  command: "wp core install --path={{ vhost_path }} --url={{ vhost_url }} --admin_user=admin --admin_password={{ wp_password }} --admin_email={{ user_email }} --allow-root"
+  command: "wp core install --path={{ vhost_path }} --title="Your hopla.cloud Wordpress"  --url={{ vhost_url }} --admin_user=admin --admin_password={{ wp_password }} --admin_email={{ user_email }} --allow-root"
