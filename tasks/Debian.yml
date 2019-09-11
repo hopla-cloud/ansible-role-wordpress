@@ -47,35 +47,35 @@
 - name: Copy vhost config
   copy:
     src: "files/vhost.conf"
-    dest: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
+    dest: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
 
 - name: Update Apache vhost [1/5]
   lineinfile:
-    dest: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
+    dest: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
     regexp: '"vhost_path"'
     line: '"{{ vhost_path }}"'
 
 - name: Update Apache vhost [2/5]
   lineinfile:
-    dest: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
+    dest: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
     regexp: '"vhost_url"'
     line: '"{{ vhost_url }}"'
 
 - name: Update Apache vhost [3/5]
   lineinfile:
-    dest: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
+    dest: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
     regexp: '"php_version"'
     line: '"{{ php_version }}"'
 
 - name: Update Apache vhost [4/5]
   lineinfile:
-    dest: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
+    dest: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
     regexp: '"user_email"'
     line: '"{{ user_email }}"'
 
 - name: Update Apache vhost [5/5]
   lineinfile:
-    dest: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
+    dest: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
     regexp: '"vhost_conf_file"'
     line: '"{{ vhost_conf_file }}"'
 
