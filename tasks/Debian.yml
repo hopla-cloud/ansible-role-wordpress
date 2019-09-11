@@ -18,7 +18,7 @@
 - name: Add vhost user
   user:
     name: {{ vhost_user }}
-    comment: User for {{ vhost_url }}
+    comment: "User for {{ vhost_url }}"
     password: {{ vhost_password }}
 
 - name: Create mysql database
