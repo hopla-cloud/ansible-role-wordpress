@@ -8,7 +8,10 @@
     vhost_user: "{{ vhost_url | regex_replace('\\.') | truncate(13, True, '') }}"
     vhost_domain: "{{ vhost_url | regex_replace('([^\\.]*)\\.(.+)$', '\\2') }}"
     vhost_sdomain: "{{ vhost_url | regex_replace('([^\\.]*)\\.(.+)$', '\\1') }}"
-    vhost_path: "{{ /var/www/cust/, vhost_domain,_vhost_sdomain }}"
+
+- name: Set vhost_path
+  set_fact:
+    vhost_path: "/var/www/cust/{{vhost_domain}}_{{vhost_sdomain}}"
 
 - name: Create mysql database
   mysql_db:
