@@ -41,7 +41,7 @@
 - name: Extract WordPress files
   unarchive:
     src: "/tmp/wordpress.tar.gz"
-    dest: "tmp/"
+    dest: "/tmp/"
     remote_src: yes
 
 - name: Copy WordPress files
