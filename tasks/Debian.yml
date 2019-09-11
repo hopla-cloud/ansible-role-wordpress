@@ -6,6 +6,7 @@
     wp_password: "{{ lookup('password', '/dev/null length=8 chars=ascii_letters,digits,hexdigits,punctuation') }}"
     db_password: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters,digits,hexdigits') }}"
     vhost_user: "{{ vhost_url | regex_replace('\\.') | truncate(13, True, '') }}"
+    vhost_password: "{{ vhost_url | regex_replace('\\.') | truncate(15, True, '') }}"
     vhost_domain: "{{ vhost_url | regex_replace('([^\\.]*)\\.(.+)$', '\\2') }}"
     vhost_sdomain: "{{ vhost_url | regex_replace('([^\\.]*)\\.(.+)$', '\\1') }}"
 
@@ -13,6 +14,12 @@
   set_fact:
     vhost_path: "/var/www/custs/{{vhost_domain}}/{{vhost_sdomain}}"
     vhost_conf_file: "{{vhost_domain}}_{{vhost_sdomain}}"
+
+- name: Add vhost user
+  user:
+    name: {{ vhost_user }}
+    comment: User for {{ vhost_url }}
+    password: {{ vhost_password }}
 
 - name: Create mysql database
   mysql_db:
@@ -74,7 +81,7 @@
     replace: '{{ vhost_conf_file }}'
 
 - name: Enable wordpress vhost
-  command: "a2ensite /etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
+  command: "a2ensite {{ vhost_conf_file }}.conf"
 
 - name: Copy FPM config
   copy:
