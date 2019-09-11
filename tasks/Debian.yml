@@ -11,7 +11,8 @@
 
 - name: Set vhost_path
   set_fact:
-    vhost_path: "/var/www/cust/{{vhost_domain}}_{{vhost_sdomain}}"
+    vhost_path: "/var/www/custs/{{vhost_domain}}/{{vhost_sdomain}}"
+    vhost_conf_file: "{{vhost_domain}}_{{vhost_sdomain}}"
 
 - name: Create mysql database
   mysql_db:
@@ -42,35 +43,42 @@
     src: "/tmp/wordpress.tar.gz"
     des: "{{ vhost_path }}/"
     copy: "no"
+    remote_src: yes
 
 - name: Copy vhost config
   copy:
     src: "files/vhost.conf"
     dst: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
 
-- name: Update Apache vhost [1/4]
+- name: Update Apache vhost [1/5]
   lineinfile:
     dest: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
     regexp: '"vhost_path"'
     line: '"{{ vhost_path }}"'
 
-- name: Update Apache vhost [2/4]
+- name: Update Apache vhost [2/5]
   lineinfile:
     dest: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
     regexp: '"vhost_url"'
     line: '"{{ vhost_url }}"'
 
-- name: Update Apache vhost [3/4]
+- name: Update Apache vhost [3/5]
   lineinfile:
     dest: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
     regexp: '"php_version"'
     line: '"{{ php_version }}"'
 
-- name: Update Apache vhost [4/4]
+- name: Update Apache vhost [4/5]
   lineinfile:
     dest: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
     regexp: '"user_email"'
     line: '"{{ user_email }}"'
+
+- name: Update Apache vhost [5/5]
+  lineinfile:
+    dest: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
+    regexp: '"vhost_conf_file"'
+    line: '"{{ vhost_conf_file }}"'
 
 - name: Copy sample config file
   copy:
