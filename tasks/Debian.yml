@@ -36,6 +36,7 @@
   get_url:
     url: "https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar"
     dest: "/usr/local/bin/wp"
+    mode: "755"
 
 - name: Copy vhost config
   copy:
@@ -72,6 +73,9 @@
     regexp: '"vhost_conf_file"'
     line: '"{{ vhost_conf_file }}"'
 
+- name: Donwload wordpress core
+  command: "wp core download --path={{ vhost_path }} --version=latest --locale=fr_FR --force --allow-root"
+
 - name: Copy sample config file
   copy:
     remote_src: yes
@@ -84,6 +88,9 @@
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
   with_items:
-    - {'regexp': "define\\('DB_NAME', '(.)+'\\);", 'line': "define('DB_NAME', '{{ db_name }}}');"}
-    - {'regexp': "define\\('DB_USER', '(.)+'\\);", 'line': "define('DB_USER', '{{ db_name }}');"}
+    - {'regexp': "define\\('DB_NAME', '(.)+'\\);", 'line': "define('DB_NAME', '{{ vhost_user }}}');"}
+    - {'regexp': "define\\('DB_USER', '(.)+'\\);", 'line': "define('DB_USER', '{{ vhost_user }}');"}
     - {'regexp': "define\\('DB_PASSWORD', '(.)+'\\);", 'line': "define('DB_PASSWORD', '{{ db_password }}');"}
+
+- name: Install wordpress core
+  command: "wp core install --path={{ vhost_path }} --url={{ vhost_url }} --admin_user=admin --admin_password={{ wp_password }} --admin_email={{ user_email }} --allow-root"
