@@ -42,7 +42,6 @@
   unarchive:
     src: "/tmp/wordpress.tar.gz"
     des: "{{ vhost_path }}/"
-    copy: "no"
     remote_src: yes
 
 - name: Copy vhost config
