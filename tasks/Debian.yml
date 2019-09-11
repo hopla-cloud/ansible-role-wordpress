@@ -47,7 +47,7 @@
 - name: Copy vhost config
   copy:
     src: "files/vhost.conf"
-    dst: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
+    dest: "/etc/apache2/sites-available/{{ vhost_url }}.conf"
 
 - name: Update Apache vhost [1/5]
   lineinfile:
