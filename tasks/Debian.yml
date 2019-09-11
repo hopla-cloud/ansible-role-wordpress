@@ -44,34 +44,34 @@
     dest: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
 
 - name: Update Apache vhost [1/5]
-  lineinfile:
-    dest: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
+  replace:
+    path: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
     regexp: '"vhost_path"'
-    line: '"{{ vhost_path }}"'
+    replace: '"{{ vhost_path }}"'
 
 - name: Update Apache vhost [2/5]
-  lineinfile:
-    dest: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
+  replace:
+    path: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
     regexp: '"vhost_url"'
-    line: '"{{ vhost_url }}"'
+    replace: '"{{ vhost_url }}"'
 
 - name: Update Apache vhost [3/5]
-  lineinfile:
-    dest: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
+  replace:
+    path: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
     regexp: '"php_version"'
-    line: '"{{ php_version }}"'
+    replace: '"{{ php_version }}"'
 
 - name: Update Apache vhost [4/5]
-  lineinfile:
-    dest: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
+  replace:
+    path: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
     regexp: '"user_email"'
-    line: '"{{ user_email }}"'
+    replace: '"{{ user_email }}"'
 
 - name: Update Apache vhost [5/5]
-  lineinfile:
-    dest: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
+  replace:
+    path: "/etc/apache2/sites-available/{{ vhost_conf_file }}.conf"
     regexp: '"vhost_conf_file"'
-    line: '"{{ vhost_conf_file }}"'
+    replace: '"{{ vhost_conf_file }}"'
 
 - name: Donwload wordpress core
   command: "wp core download --path={{ vhost_path }} --version=latest --locale=fr_FR --force --allow-root"
