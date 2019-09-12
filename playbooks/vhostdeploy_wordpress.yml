@@ -3,5 +3,9 @@
   remote_user: root
   vars:
     user_name: ubuntu
+    mysql_packages:
+      - mariadb-client
+      - mariadb-server
+      - python-mysqldb
   roles:
     - hoplacloud.wordpress
