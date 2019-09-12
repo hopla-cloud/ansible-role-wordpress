@@ -141,9 +141,9 @@
   mail:
     host: localhost
     port: 25
-    to: {{ user_email }}
+    to: "{{ user_email }}"
     subject: 'Hopla.cloud: Votre Wordpress vous attend'
-    subtype: html
+    subtype: "html"
     body: '
     WordPress
     {{ vhost_url }}
