@@ -136,3 +136,20 @@
 
 - name: Install wordpress core
   command: "wp core install --path={{ vhost_path }} --title='Your hopla.cloud Wordpress'  --url={{ vhost_url }} --admin_user=admin --admin_password={{ wp_password }} --admin_email={{ user_email }} --allow-root"
+
+- name: Sending end of provisionning Email to user
+  mail:
+    host: localhost
+    port: 25
+    to: {{ user_email }}
+    subject: 'Hopla.cloud: Votre Wordpress vous attend'
+    subtype: html
+    body: '
+    WordPress
+    {{ vhost_url }}
+    Utilisateur: admin
+    Mot de passe: {{ wp_password }}
+    FTP
+    {{ vhost_user }}
+    {{ vhost_password }}
+    '
