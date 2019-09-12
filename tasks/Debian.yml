@@ -3,7 +3,7 @@
 
 - name: Init vars
   set_fact:
-    wp_password: "{{ lookup('password', '/dev/null length=8 chars=ascii_letters,digits,hexdigits,punctuation') }}"
+    wp_password: "{{ lookup('password', '/dev/null length=8 chars=ascii_letters,digits,hexdigits') }}"
     db_password: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters,digits,hexdigits') }}"
     vhost_user: "{{ vhost_url | regex_replace('\\.') | truncate(13, True, '') }}"
     vhost_password: "{{ lookup('password', '/dev/null length=12 chars=ascii_letters,digits,hexdigits') }}"
@@ -154,7 +154,7 @@
     Acces admin : http://{{ vhost_url }}/wp-admin/ <br>
     </p>
     <p>
-    FTP
+    FTP <br>
     ftp://{{ vhost_url }} <br>
     Utilisateur: {{ vhost_user }} <br>
     Mot de passe:{{ vhost_password }} <br>
