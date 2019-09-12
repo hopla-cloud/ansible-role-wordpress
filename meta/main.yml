@@ -1,6 +1,6 @@
 galaxy_info:
   role_name: wordpress
-  author: hoplacloud
+  author: Joffrey Skandera
   description: Hopla.cloud role for ansible to install wordpress
   company: hopla.cloud
 

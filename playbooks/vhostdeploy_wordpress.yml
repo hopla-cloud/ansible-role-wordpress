@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  remote_user: root
+  vars:
+    user_name: ubuntu
+  roles:
+    - hoplacloud.wordpress
