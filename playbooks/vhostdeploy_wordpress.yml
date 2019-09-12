@@ -3,6 +3,7 @@
   remote_user: root
   vars:
     user_name: ubuntu
+    php_version: 7.3
     mysql_packages:
       - mariadb-client
       - mariadb-server
