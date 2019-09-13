@@ -157,6 +157,6 @@
     FTP <br>
     ftp://{{ vhost_url }} <br>
     Utilisateur: {{ vhost_user }} <br>
-    Mot de passe:{{ vhost_password }} <br>
+    Mot de passe: {{ vhost_password }} <br>
     </p>
     '

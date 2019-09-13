@@ -11,7 +11,8 @@ None.
 Role Variables
 --------------
 
-None.
+vhost_url: "exemple.domain.com"
+user_email: "exemple@domain.com"
 
 
 Dependencies
