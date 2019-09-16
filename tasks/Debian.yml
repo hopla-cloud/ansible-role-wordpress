@@ -115,7 +115,7 @@
 - name: restart apache
   service: name=apache2 state=restarted
 
-- name: Donwload wordpress core
+- name: Download wordpress core
   command: "wp core download --path={{ vhost_path }} --version=latest --locale=fr_FR --force --allow-root"
 
 - name: Copy sample config file

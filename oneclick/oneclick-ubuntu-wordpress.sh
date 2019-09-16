@@ -32,7 +32,7 @@ echo "- hoplacloud.proftpd" >> /etc/hopla.cloud-roles
 echo "- hoplacloud.postfix" >> /etc/hopla.cloud-roles
 echo "- hoplacloud.mysql" >> /etc/hopla.cloud-roles
 echo " " >> /etc/hopla.cloud-roles
-echo "Deployment date (YYYY-MM-DD):" >> /etc/hopla.cloud-roles
+echo -n "Deployment date (YYYY-MM-DD): " >> /etc/hopla.cloud-roles
 date +%F >> /etc/hopla.cloud-roles
 
 # Install oneclick app
