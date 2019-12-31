@@ -15,12 +15,17 @@
     vhost_path: "/var/www/custs/{{ vhost_domain }}/{{ vhost_sdomain }}"
     vhost_conf_file: "{{ vhost_domain }}_{{ vhost_sdomain }}"
 
+- name: Creating websites directory
+  file:
+    path: "{{ vhost_path }}"
+    state: directory
+    
 - name: Add vhost user
   user:
     name: "{{ vhost_user }}"
     comment: "User for {{ vhost_url }}"
     password: "{{ vhost_password | password_hash('sha512') }}"
-    home: "/var/www/custs/{{ vhost_domain }}/{{ vhost_sdomain }}"
+    home: "{{ vhost_path }}"
 
 - name: Create mysql database
   mysql_db:
@@ -34,11 +39,6 @@
     password: "{{ db_password }}"
     login_host: localhost
     priv: '{{ vhost_user }}.*:ALL,GRANT'
-
-- name: Creating websites directory
-  file:
-    path: "{{ vhost_path }}"
-    state: directory
 
 - name: Download wp-cli
   get_url:
