@@ -20,6 +20,7 @@
     name: "{{ vhost_user }}"
     comment: "User for {{ vhost_url }}"
     password: "{{ vhost_password | password_hash('sha512') }}"
+    home: "/var/www/custs/{{ vhost_domain }}/{{ vhost_sdomain }}"
 
 - name: Create mysql database
   mysql_db:
