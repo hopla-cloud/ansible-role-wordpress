@@ -15,6 +15,8 @@
 
 # Set env vars
 export HOME=/root
+# Set current date
+currdate=$(date +%F)
 
 # Install ansible
 apt update
@@ -24,16 +26,7 @@ DEBIAN_FRONTEND=noninteractive apt install ansible -y --allow-yes true
 ansible-galaxy install hoplacloud.wordpress
 
 # Write roles
-echo "- hoplacloud.apache_php" >> /etc/hopla.cloud-roles
-echo "- hoplacloud.linux_update" >> /etc/hopla.cloud-roles
-echo "- hoplacloud.fail2ban" >> /etc/hopla.cloud-roles
-echo "- hoplacloud.vhostdeploy_apache" >> /etc/hopla.cloud-roles
-echo "- hoplacloud.proftpd" >> /etc/hopla.cloud-roles
-echo "- hoplacloud.postfix" >> /etc/hopla.cloud-roles
-echo "- hoplacloud.mysql" >> /etc/hopla.cloud-roles
-echo " " >> /etc/hopla.cloud-roles
-echo -n "Deployment date (YYYY-MM-DD): " >> /etc/hopla.cloud-roles
-date +%F >> /etc/hopla.cloud-roles
+echo "- hoplacloud.apache_php (${currdate})" >> /etc/hopla.cloud-roles
 
 # Install oneclick app
 ansible-playbook /root/.ansible/roles/hoplacloud.wordpress/playbooks/vhostdeploy_wordpress.yml --extra-vars "$1"

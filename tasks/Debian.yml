@@ -19,7 +19,7 @@
   file:
     path: "{{ vhost_path }}"
     state: directory
-    
+
 - name: Add vhost user
   user:
     name: "{{ vhost_user }}"
@@ -117,7 +117,7 @@
   service: name=apache2 state=restarted
 
 - name: Download wordpress core
-  command: "wp core download --path={{ vhost_path }} --version=latest --locale=fr_FR --force --allow-root"
+  command: "wp core download --path={{ vhost_path }} --version={{ wp_version }}--locale=fr_FR --force --allow-root"
 
 - name: Copy sample config file
   copy:
@@ -137,6 +137,13 @@
 
 - name: Install wordpress core
   command: "wp core install --path={{ vhost_path }} --title='Your hopla.cloud Wordpress'  --url={{ vhost_url }} --admin_user=admin --admin_password={{ wp_password }} --admin_email={{ user_email }} --allow-root"
+
+- name: Log variables to file
+  template:
+    src: logs.j2
+    dest: /root/Oneclick-wp-{{ ansible_date_time.date }}-{{ ansible_date_time.time }}.txt
+    owner: root
+    group: root
 
 - name: Sending end of provisionning Email to user
   mail:
