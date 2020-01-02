@@ -13,7 +13,7 @@ Role Variables
 
 vhost_url: "exemple.domain.com"
 user_email: "exemple@domain.com"
-
+wp_version: "5.3"
 
 Dependencies
 ------------
