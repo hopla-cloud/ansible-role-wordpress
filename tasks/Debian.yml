@@ -154,7 +154,7 @@
     host: localhost
     port: 25
     to: "{{ user_email }}"
-    subject: "Hopla 👏 Votre {{ app_name }} vous attend"
+    subject: "hopla.cloud : 👏 Votre {{ app_name }} vous attend !"
     subtype: "html"
     secure: "never"
     body: '
