@@ -146,8 +146,8 @@
     group: root
 
 - name: Display root password in case of mail delivery failure
-    debug:
-      msg: root password is {{ root_password }}
+  debug:
+    msg: root password is {{ root_password }}
 
 - name: Sending end of provisionning Email to user
   mail:
