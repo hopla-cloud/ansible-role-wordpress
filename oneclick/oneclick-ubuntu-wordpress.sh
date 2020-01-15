@@ -27,7 +27,7 @@ DEBIAN_FRONTEND=noninteractive apt install ansible -y --allow-yes true
 ansible-galaxy install hoplacloud.wordpress
 
 # Write roles
-echo "- hoplacloud.apache_php (${currdate})" >> /etc/hopla.cloud-roles
+echo "- hoplacloud.wordpress (${currdate})" >> /etc/hopla.cloud-roles
 
 # Install oneclick app
 ansible-playbook /root/.ansible/roles/hoplacloud.wordpress/playbooks/vhostdeploy_wordpress.yml --extra-vars "$1"
