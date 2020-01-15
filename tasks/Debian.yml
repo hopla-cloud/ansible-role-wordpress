@@ -1,6 +1,17 @@
 ---
 # tasks file for hoplacloud.wordpress
 
+- name: Ensure root password is allowed in SSH
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#PermitRootLogin'
+    line: "PermitRootLogin yes"
+
+- name: restart service ssh
+  systemd:
+    state: restarted
+    name: ssh
+
 - name: Init vars
   set_fact:
     wp_password: "{{ lookup('password', '/dev/null length=8 chars=ascii_letters,digits,hexdigits') }}"
