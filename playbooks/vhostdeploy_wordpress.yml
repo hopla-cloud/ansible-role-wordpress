@@ -9,6 +9,7 @@
       - mariadb-server
     mysql_python_package_debian:
       - python3-mysqldb
-      - python3-pymysql
+#      - python3-pymysql
+    ansible_python_interpreter: /usr/bin/python3
   roles:
     - hoplacloud.wordpress

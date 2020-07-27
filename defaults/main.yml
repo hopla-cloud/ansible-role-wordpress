@@ -1,4 +1,4 @@
 ---
 # defaults file for hoplacloud.wordpress
 #WordPress version
-wp_version: "5.3"
+wp_version: "5.4.2"
