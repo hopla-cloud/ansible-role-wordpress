@@ -19,7 +19,8 @@ export HOME=/root
 currdate=$(date +%F)
 
 # Install ansible
-DEBIAN_FRONTEND=noninteractive add-apt-repository ppa:ansible/ansible
+# For ubuntu 18.04
+#DEBIAN_FRONTEND=noninteractive add-apt-repository ppa:ansible/ansible
 apt update
 DEBIAN_FRONTEND=noninteractive apt install ansible -y --allow-yes true
 
