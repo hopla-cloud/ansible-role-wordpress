@@ -142,9 +142,9 @@
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
   with_items:
-    - {'regexp': "define\\('DB_NAME', '(.)+'\\);", 'line': "define('DB_NAME', '{{ vhost_user }}');"}
-    - {'regexp': "define\\('DB_USER', '(.)+'\\);", 'line': "define('DB_USER', '{{ vhost_user }}');"}
-    - {'regexp': "define\\('DB_PASSWORD', '(.)+'\\);", 'line': "define('DB_PASSWORD', '{{ db_password }}');"}
+    - {'regexp': "^define\\( 'DB_NAME'*", 'line': "define('DB_NAME', '{{ vhost_user }}');"}
+    - {'regexp': "^define\\( 'DB_USER'*", 'line': "define('DB_USER', '{{ vhost_user }}');"}
+    - {'regexp': "^define\\( 'DB_PASSWORD'*", 'line': "define('DB_PASSWORD', '{{ db_password }}');"}
 
 - name: Install wordpress core
   command: "wp core install --path={{ vhost_path }} --title='Your hopla.cloud Wordpress'  --url={{ vhost_url }} --admin_user=admin --admin_password={{ wp_password }} --admin_email={{ user_email }} --allow-root --skip-email"
