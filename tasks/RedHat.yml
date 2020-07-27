@@ -1,2 +1,4 @@
 ---
 # tasks file for hoplacloud.wordpress
+- name: No RedHat tasks
+  fail:
